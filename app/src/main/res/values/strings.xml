@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">AppCadastroFirebase</string>
+    <string name="app_name">CRUD Firebase</string>
+    <string name="action_save">Salvar</string>
 </resources>
