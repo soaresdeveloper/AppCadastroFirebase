@@ -42,6 +42,39 @@
                 android:inputType="textEmailAddress"
                 android:maxLines="1" />
 
+        <EditText
+                android:id="@+id/senha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/senha"
+                android:inputType="textVisiblePassword"
+                android:maxLines="1" />
+
+        <EditText
+                android:id="@+id/telefone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/telefone"
+                android:inputType="phone"
+                android:maxLines="1" />
+
+        <EditText
+                android:id="@+id/celular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/celular"
+                android:inputType="phone"
+                android:maxLines="1" />
+
+        <Spinner
+            android:id="@+id/spnCidade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/cidades"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+           />
+
 
         <Button
             android:id="@+id/btn_save"
