@@ -66,6 +66,14 @@
                 android:inputType="phone"
                 android:maxLines="1" />
 
+        <EditText
+                android:id="@+id/cpf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/cpf"
+                android:inputType="number"
+                android:maxLines="1" />
+
         <Spinner
             android:id="@+id/spnCidade"
             android:layout_width="match_parent"
