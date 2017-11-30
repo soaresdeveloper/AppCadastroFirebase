@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseInstance = FirebaseDatabase.getInstance();
 
         // ativa persistencia de dados offline
-        mFirebaseInstance.setPersistenceEnabled(true);
+        //mFirebaseInstance.setPersistenceEnabled(true);
 
         // get reference to 'users' node
         mFirebaseDatabase = mFirebaseInstance.getReference("users");
