@@ -1,16 +1,14 @@
 package firebase.androidinfnet.info.appcadastrofirebase;
 
 
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.FirebaseException;
@@ -57,8 +55,13 @@ public class MainActivity extends AppCompatActivity {
 
         mFirebaseInstance = FirebaseDatabase.getInstance();
 
+        // ativa persistencia de dados offline
+        mFirebaseInstance.setPersistenceEnabled(true);
+
         // get reference to 'users' node
         mFirebaseDatabase = mFirebaseInstance.getReference("users");
+
+
 
         // store app title to 'app_title' node
         mFirebaseInstance.getReference("app_title").setValue("Realtime Database");
@@ -71,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
 
                 String appTitle = dataSnapshot.getValue(String.class);
 
-                // update toolbar title
                 getSupportActionBar().setTitle(appTitle);
             }
 
