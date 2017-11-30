@@ -1,6 +1,7 @@
 package firebase.androidinfnet.info.appcadastrofirebase;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -20,7 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private TextView txtDetails;
-    private EditText inputName, inputEmail;
+    private EditText inputName, inputEmail, inputSenha, inputTelefone, inputCelular, inputCpf;
+    private Spinner spnCidade;
     private Button btnSave;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
@@ -39,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
         txtDetails = (TextView) findViewById(R.id.txt_user);
         inputName = (EditText) findViewById(R.id.name);
         inputEmail = (EditText) findViewById(R.id.email);
+        inputSenha = (EditText) findViewById(R.id.senha);
+        inputTelefone = (EditText) findViewById(R.id.telefone);
+        inputCelular = (EditText) findViewById(R.id.celular);
+        inputCpf = (EditText) findViewById(R.id.cpf);
+        spnCidade = (Spinner) findViewById(R.id.spnCidade);
         btnSave = (Button) findViewById(R.id.btn_save);
 
         mFirebaseInstance = FirebaseDatabase.getInstance();
@@ -74,40 +82,45 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String name = inputName.getText().toString();
                 String email = inputEmail.getText().toString();
+                String senha = inputSenha.getText().toString();
+                String cidade = spnCidade.getSelectedItem().toString();
+                Integer telefone = Integer.parseInt(inputTelefone.getText().toString());
+                Integer celular = Integer.parseInt(inputCelular.getText().toString());
+                Integer cpf = Integer.parseInt(inputCpf.getText().toString());
 
                 // Check for already existed userId
-                if (TextUtils.isEmpty(userId)) {
-                    createUser(name, email);
-                } else {
-                    updateUser(name, email);
-                }
+//                if (TextUtils.isEmpty(userId)) {
+                    createUser(name, email, senha, telefone, celular, cpf, cidade);
+//                } else {
+//                    updateUser(name, email);
+//                }
             }
         });
 
-        toggleButton();
+//        toggleButton();
     }
 
     // Changing button text
-    private void toggleButton() {
-        if (TextUtils.isEmpty(userId)) {
-            btnSave.setText("Save");
-        } else {
-            btnSave.setText("Update");
-        }
-    }
+//    private void toggleButton() {
+//        if (TextUtils.isEmpty(userId)) {
+//            btnSave.setText("Save");
+//        } else {
+//            btnSave.setText("Update");
+//        }
+//    }
 
     /**
      * Creating new user node under 'users'
      */
-    private void createUser(String name, String email) {
+    private void createUser(String name, String email, String senha, Integer telefone, Integer celular, Integer cpf, String cidade) {
         // TODO
         // In real apps this userId should be fetched
         // by implementing firebase auth
-        if (TextUtils.isEmpty(userId)) {
-            userId = mFirebaseDatabase.push().getKey();
-        }
+//        if (TextUtils.isEmpty(userId)) {
+          userId = mFirebaseDatabase.push().getKey();
+//        }
 
-        User user = new User(name, email);
+        User user = new User(name, email, senha, telefone, celular, cpf, cidade);
 
         mFirebaseDatabase.child(userId).setValue(user);
 
@@ -138,8 +151,12 @@ public class MainActivity extends AppCompatActivity {
                 // clear edit text
                 inputEmail.setText("");
                 inputName.setText("");
+                inputSenha.setText("");
+                inputTelefone.setText("");
+                inputCelular.setText("");
+                inputCpf.setText("");
 
-                toggleButton();
+//                toggleButton();
             }
 
             @Override
