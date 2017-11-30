@@ -2,6 +2,7 @@ package firebase.androidinfnet.info.appcadastrofirebase;
 
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     List<EditText> campos;
     private EditText inputName, inputEmail, inputSenha, inputTelefone, inputCelular, inputCpf;
     private Spinner spnCidade;
-    private Button btnSave, btnLimpar;
+    private Button btnSave, btnLimpar, btnUsuarios;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
     private String userId;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         spnCidade = (Spinner) findViewById(R.id.spnCidade);
         btnSave = (Button) findViewById(R.id.btn_save);
         btnLimpar = (Button) findViewById(R.id.btn_limpar);
+        btnUsuarios = (Button) findViewById(R.id.btn_usuarios);
 
         mFirebaseInstance = FirebaseDatabase.getInstance();
 
@@ -109,6 +111,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 limparCampos();
+            }
+        });
+
+        btnUsuarios.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, VisualizarUsuariosActivity.class);
+                startActivity(intent);
             }
         });
 

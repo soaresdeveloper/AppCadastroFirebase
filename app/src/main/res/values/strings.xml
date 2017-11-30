@@ -2,6 +2,7 @@
     <string name="app_name">CRUD Firebase</string>
     <string name="action_save">Salvar</string>
     <string name="action_limpar">Limpar</string>
+    <string name="action_usuarios">Visualizar Usuários</string>
     <string name="name">Nome</string>
     <string name="email">Email</string>
     <string name="senha">Senha</string>

@@ -90,7 +90,7 @@
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:layout_weight="1"
-            android:layout_margin="2.5dp"
+            android:layout_marginRight="2.5dp"
             />
 
         <Button
@@ -104,10 +104,21 @@
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:layout_weight="1"
-            android:layout_margin="2.5dp"/>
-
+            />
 
     </LinearLayout>
+        <Button
+            android:id="@+id/btn_usuarios"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/divider"
+            android:text="@string/action_usuarios"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            />
 
     </LinearLayout>
 
