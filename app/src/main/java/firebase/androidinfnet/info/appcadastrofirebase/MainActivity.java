@@ -11,24 +11,31 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.FirebaseException;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private TextView txtDetails;
+    private static final String SUCCESS_MESSENGER = "Cadastro realizado com sucesso";
+    private static final String ERROR_MESSENGER = "Ocorreu um erro, tente novamente";
+    List<EditText> campos;
     private EditText inputName, inputEmail, inputSenha, inputTelefone, inputCelular, inputCpf;
     private Spinner spnCidade;
     private Button btnSave;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
-
     private String userId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
-        txtDetails = (TextView) findViewById(R.id.txt_user);
         inputName = (EditText) findViewById(R.id.name);
         inputEmail = (EditText) findViewById(R.id.email);
         inputSenha = (EditText) findViewById(R.id.senha);
@@ -80,34 +86,24 @@ public class MainActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = inputName.getText().toString();
-                String email = inputEmail.getText().toString();
-                String senha = inputSenha.getText().toString();
-                String cidade = spnCidade.getSelectedItem().toString();
-                Integer telefone = Integer.parseInt(inputTelefone.getText().toString());
-                Integer celular = Integer.parseInt(inputCelular.getText().toString());
-                Integer cpf = Integer.parseInt(inputCpf.getText().toString());
 
-                // Check for already existed userId
-//                if (TextUtils.isEmpty(userId)) {
+                if (validarCampos()) {
+                    String name = inputName.getText().toString();
+                    String email = inputEmail.getText().toString();
+                    String senha = inputSenha.getText().toString();
+                    String cidade = spnCidade.getSelectedItem().toString();
+                    Integer telefone = Integer.parseInt(inputTelefone.getText().toString());
+                    Integer celular = Integer.parseInt(inputCelular.getText().toString());
+                    Integer cpf = Integer.parseInt(inputCpf.getText().toString());
+
                     createUser(name, email, senha, telefone, celular, cpf, cidade);
-//                } else {
-//                    updateUser(name, email);
-//                }
+
+                }
             }
         });
 
-//        toggleButton();
     }
 
-    // Changing button text
-//    private void toggleButton() {
-//        if (TextUtils.isEmpty(userId)) {
-//            btnSave.setText("Save");
-//        } else {
-//            btnSave.setText("Update");
-//        }
-//    }
 
     /**
      * Creating new user node under 'users'
@@ -116,15 +112,14 @@ public class MainActivity extends AppCompatActivity {
         // TODO
         // In real apps this userId should be fetched
         // by implementing firebase auth
-//        if (TextUtils.isEmpty(userId)) {
-          userId = mFirebaseDatabase.push().getKey();
-//        }
 
+        userId = mFirebaseDatabase.push().getKey();
         User user = new User(name, email, senha, telefone, celular, cpf, cidade);
 
         mFirebaseDatabase.child(userId).setValue(user);
 
         addUserChangeListener();
+
     }
 
     /**
@@ -139,40 +134,66 @@ public class MainActivity extends AppCompatActivity {
 
                 // Check for null
                 if (user == null) {
+
+                    showMessenger(ERROR_MESSENGER);
                     Log.e(TAG, "User data is null!");
                     return;
                 }
 
+                showMessenger(SUCCESS_MESSENGER);
                 Log.e(TAG, "User data is changed!" + user.name + ", " + user.email);
 
-                // Display newly updated name and email
-                txtDetails.setText(user.name + ", " + user.email);
+                limparCampos();
 
-                // clear edit text
-                inputEmail.setText("");
-                inputName.setText("");
-                inputSenha.setText("");
-                inputTelefone.setText("");
-                inputCelular.setText("");
-                inputCpf.setText("");
-
-//                toggleButton();
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
+                showMessenger(ERROR_MESSENGER);
                 Log.e(TAG, "Failed to read user", error.toException());
             }
         });
     }
 
-    private void updateUser(String name, String email) {
-        // updating the user via child nodes
-        if (!TextUtils.isEmpty(name))
-            mFirebaseDatabase.child(userId).child("name").setValue(name);
-
-        if (!TextUtils.isEmpty(email))
-            mFirebaseDatabase.child(userId).child("email").setValue(email);
+    private void limparCampos() {
+        // clear edit text
+        inputEmail.setText("");
+        inputName.setText("");
+        inputSenha.setText("");
+        inputTelefone.setText("");
+        inputCelular.setText("");
+        inputCpf.setText("");
     }
+
+    private boolean validarCampos() {
+
+        boolean result = true;
+
+        if (campos == null) {
+            campos = new ArrayList<>();
+        }
+
+        campos.add(inputName);
+        campos.add(inputEmail);
+        campos.add(inputSenha);
+        campos.add(inputTelefone);
+        campos.add(inputCelular);
+        campos.add(inputCpf);
+
+        for (EditText campo : campos) {
+            if (campo.getText().toString().trim().equals("") || campo.getText().toString() == null) {
+                campo.setError("Este campo é obrigatório!");
+                result = false;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    private void showMessenger(String mensagem) {
+        Toast.makeText(this, mensagem, Toast.LENGTH_SHORT).show();
+    }
+
 }
