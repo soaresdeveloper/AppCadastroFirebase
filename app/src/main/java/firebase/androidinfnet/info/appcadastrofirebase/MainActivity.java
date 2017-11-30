@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     List<EditText> campos;
     private EditText inputName, inputEmail, inputSenha, inputTelefone, inputCelular, inputCpf;
     private Spinner spnCidade;
-    private Button btnSave;
+    private Button btnSave, btnLimpar;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
     private String userId;
@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         inputCpf = (EditText) findViewById(R.id.cpf);
         spnCidade = (Spinner) findViewById(R.id.spnCidade);
         btnSave = (Button) findViewById(R.id.btn_save);
+        btnLimpar = (Button) findViewById(R.id.btn_limpar);
 
         mFirebaseInstance = FirebaseDatabase.getInstance();
 
@@ -101,6 +102,13 @@ public class MainActivity extends AppCompatActivity {
                     createUser(name, email, senha, telefone, celular, cpf, cidade);
 
                 }
+            }
+        });
+
+        btnLimpar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                limparCampos();
             }
         });
 
