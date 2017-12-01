@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String SUCCESS_MESSENGER = "Cadastro realizado com sucesso";
     private static final String ERROR_MESSENGER = "Ocorreu um erro, tente novamente";
+    private static final String REGISTROS_ISNULL = "Nenhum usuário cadastrado, seja o primeiro!";
     List<EditText> campos;
     private EditText inputName, inputEmail, inputSenha, inputTelefone, inputCelular, inputCpf;
     private Spinner spnCidade;
@@ -87,19 +88,20 @@ public class MainActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+            if (registrosIsNull()) {
                 if (validarCampos()) {
-                    String name = inputName.getText().toString();
-                    String email = inputEmail.getText().toString();
-                    String senha = inputSenha.getText().toString();
-                    String cidade = spnCidade.getSelectedItem().toString();
-                    Integer telefone = Integer.parseInt(inputTelefone.getText().toString());
-                    Integer celular = Integer.parseInt(inputCelular.getText().toString());
-                    Integer cpf = Integer.parseInt(inputCpf.getText().toString());
+                        String name = inputName.getText().toString();
+                        String email = inputEmail.getText().toString();
+                        String senha = inputSenha.getText().toString();
+                        String cidade = spnCidade.getSelectedItem().toString();
+                        Integer telefone = Integer.parseInt(inputTelefone.getText().toString());
+                        Integer celular = Integer.parseInt(inputCelular.getText().toString());
+                        Integer cpf = Integer.parseInt(inputCpf.getText().toString());
 
-                    createUser(name, email, senha, telefone, celular, cpf, cidade);
+                        createUser(name, email, senha, telefone, celular, cpf, cidade);
 
                 }
+            }
             }
         });
 
@@ -206,6 +208,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return result;
+    }
+
+    //Verifica se existe algum usuario cadastrado no banco
+    private boolean registrosIsNull(){
+
+        // pega referencia do nodo.
+        mFirebaseDatabase = mFirebaseInstance.getReference("users");
+        if (mFirebaseDatabase == null){
+            showMessenger(REGISTROS_ISNULL);
+            return false;
+        }else {
+            return true;
+        }
     }
 
     private void showMessenger(String mensagem) {
