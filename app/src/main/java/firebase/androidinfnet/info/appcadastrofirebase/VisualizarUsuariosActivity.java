@@ -2,7 +2,9 @@ package firebase.androidinfnet.info.appcadastrofirebase;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -17,7 +19,7 @@ public class VisualizarUsuariosActivity extends AppCompatActivity {
     RecyclerView recyclerView;
 
     private UserRecyclerAdapter adapter;
-    private DatabaseReference firebase;
+    private DatabaseReference reference;
     private AdView mAdView;
 
     @Override
@@ -31,17 +33,19 @@ public class VisualizarUsuariosActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // AdBanner --Anuncios
         mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
-        // referencia ao nodo
-        firebase = FirebaseDatabase.getInstance().getReference().child("users");
+        // Configurando referencia Firebase
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        reference = database.getReference("users");
+        reference.keepSynced(true);
 
-
-        adapter = new UserRecyclerAdapter(User.class, android.R.layout.two_line_list_item, UserViewHolder.class, firebase);
+        adapter = new UserRecyclerAdapter(User.class, android.R.layout.two_line_list_item, UserViewHolder.class, reference);
         recyclerView.setAdapter(adapter);
 
     }

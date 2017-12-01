@@ -1,7 +1,6 @@
 package firebase.androidinfnet.info.appcadastrofirebase;
 
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +11,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.firebase.FirebaseException;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         // Displaying toolbar icon
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+        getSupportActionBar().setTitle("Cadastrar Usuário");
 
         inputName = (EditText) findViewById(R.id.name);
         inputEmail = (EditText) findViewById(R.id.email);
@@ -59,13 +58,10 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseInstance = FirebaseDatabase.getInstance();
 
         // ativa persistencia de dados offline
-        //mFirebaseInstance.setPersistenceEnabled(true);
+        mFirebaseInstance.setPersistenceEnabled(true);
 
         // get reference to 'users' node
         mFirebaseDatabase = mFirebaseInstance.getReference("users");
-
-
-
         // store app title to 'app_title' node
         mFirebaseInstance.getReference("app_title").setValue("Realtime Database");
 
